@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_compartilhar"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Compartilhar Ferramenta" />
+        <item
+            android:id="@+id/nav_alugar"
+            android:icon="@drawable/ic_handshake"
+            android:title="Alugar Ferramenta" />
+
+        <item
+            android:id="@+id/nav_consultar"
+            android:icon="@drawable/ic_user"
+            android:title="Consultar Ferramenta" />
+        <item
+            android:id="@+id/nav_perfil"
+            android:icon="@drawable/ic_user"
+            android:title="Perfil" />
+        <item
+            android:id="@+id/nav_batepapo"
+            android:icon="@drawable/ic_comments"
+            android:title="Bate-papo" />
+</group>
+
+    <!--<item android:title="Communicate">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/nav_share"-->
+                <!--android:icon="@drawable/ic_menu_share"-->
+                <!--android:title="Share" />-->
+            <!--<item-->
+                <!--android:id="@+id/nav_send"-->
+                <!--android:icon="@drawable/ic_menu_send"-->
+                <!--android:title="Send" />-->
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>
