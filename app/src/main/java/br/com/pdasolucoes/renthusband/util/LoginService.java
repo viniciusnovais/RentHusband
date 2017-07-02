@@ -45,4 +45,34 @@ public class LoginService {
 
         return usuario;
     }
+
+    public static int BuscarUltimoId(){
+        int id = 0;
+
+        String url = WebService.URL + "d0c9c9a0241d/";
+        String resposta = WebService.makeRequest(url);
+        JSONObject jsonObject;
+        Usuario usuario = new Usuario();
+
+        if (resposta == null) {
+
+        } else {
+
+            try {
+                JSONArray json = new JSONArray(resposta);
+                for (int i=0;i<json.length();i++){
+                    jsonObject = json.getJSONObject(i);
+
+                    id = jsonObject.getInt("id");
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return id;
+    }
 }

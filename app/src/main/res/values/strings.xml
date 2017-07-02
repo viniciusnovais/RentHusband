@@ -140,4 +140,5 @@
     <string name="nome_produto">Nome Produto</string>
     <string name="tipo">Tipo Equipamento</string>
     <string name="foto">Selecione a imagem</string>
+    <string name="confirmar_senha">Confirmar senha</string>
 </resources>
