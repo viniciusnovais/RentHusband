@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
@@ -31,6 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.RunnableFuture;
 
 import br.com.pdasolucoes.renthusband.dao.UsuarioDao;
 import br.com.pdasolucoes.renthusband.model.Usuario;
@@ -52,6 +54,8 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
     private Usuario u = new Usuario();
     private UsuarioDao usuarioDao;
     private Calendar calendar;
+    private AlertDialog dialog, dialogSucess;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +63,6 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
         setContentView(R.layout.activity_cadastro_usuario);
 
         usuarioDao = new UsuarioDao(this);
-
         calendar = Calendar.getInstance();
 
         tvNome = (AutoCompleteTextView) findViewById(R.id.nome);
@@ -70,6 +73,15 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
         tvConfirmarSenha = (AutoCompleteTextView) findViewById(R.id.confirmarSenha);
         radioGroup = (RadioGroup) findViewById(R.id.radioButtonSexo);
         btCadastrar = (Button) findViewById(R.id.cadastrar);
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(R.layout.view_load);
+        dialog = builder.create();
+
+        AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+        builder2.setView(R.layout.sucess);
+        dialogSucess = builder2.create();
 
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -127,17 +139,19 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
 
     }
 
-    public class AsyncCadastroUsuario extends AsyncTask {
+    public class AsyncCadastroUsuario extends AsyncTask<Object, Integer, Object> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog.show();
         }
 
         @Override
         protected Object doInBackground(Object[] params) {
 
-            u.setId(LoginService.BuscarUltimoId()+1);
+
+            u.setId(LoginService.BuscarUltimoId() + 1);
             CadastroUsuarioService.cadastro(u);
             return null;
         }
@@ -145,8 +159,34 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
+
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+                limpar();
+            }
+
+            dialogSucess.show();
+            final Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (dialogSucess.isShowing()) {
+                        dialogSucess.dismiss();
+                    }
+                }
+            };
+
+            dialogSucess.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    handler.removeCallbacks(runnable);
+                }
+            });
+
+            handler.postDelayed(runnable, 100000);
+            finish();
         }
-    }
+
+}
 
 
     private boolean ValidaCadastro() {
@@ -154,7 +194,7 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
         if (tvNome.getText().toString().trim().equals("") || tvDataNasc.getText().toString().trim().equals("")
                 || tvEmail.getText().toString().trim().equals("") || tvEndereco.getText().toString().trim().equals("")
                 || tvConfirmarSenha.getText().toString().trim().equals("")) {
-            Toast.makeText(CadastroActivity.this,"Preencha os campos",Toast.LENGTH_SHORT).show();
+            Toast.makeText(CadastroActivity.this, "Preencha os campos", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -165,8 +205,8 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
         }
 
 
-        if (!ValidaTamanhoSenha(tvSenha)){
-            Toast.makeText(CadastroActivity.this,"Senha deve ter mínimo de 5 caracteres",Toast.LENGTH_SHORT).show();
+        if (!ValidaTamanhoSenha(tvSenha)) {
+            Toast.makeText(CadastroActivity.this, "Senha deve ter mínimo de 5 caracteres", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -193,14 +233,23 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
         return true;
     }
 
-    private boolean ValidaTamanhoSenha(EditText edit){
+    private boolean ValidaTamanhoSenha(EditText edit) {
 
         int tamanho = edit.getText().length();
 
-        if (tamanho<5){
+        if (tamanho < 5) {
             return false;
         }
         return true;
+    }
+
+    private void limpar() {
+        tvNome.setText("");
+        tvEndereco.setText("");
+        tvConfirmarSenha.setText("");
+        tvSenha.setText("");
+        tvDataNasc.setText("");
+        tvEmail.setText("");
     }
 
 }
