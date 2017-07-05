@@ -35,13 +35,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            android:background="@drawable/mala"
+            android:background="@drawable/ic_tools"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_produto" />
+    <include
+        android:id="@+id/content_produto"
+        layout="@layout/content_produto" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,8 +1,10 @@
 package br.com.pdasolucoes.renthusband.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import br.com.pdasolucoes.renthusband.MainActivity;
+import br.com.pdasolucoes.renthusband.ProdutoActivity;
 import br.com.pdasolucoes.renthusband.R;
 import br.com.pdasolucoes.renthusband.model.Ferramenta;
 
@@ -40,7 +44,7 @@ public class ListaProdutosAdapter extends RecyclerView.Adapter<ListaProdutosAdap
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         holder.tvNomeProduto.setText(lista.get(position).getNome());
 
@@ -65,14 +69,26 @@ public class ListaProdutosAdapter extends RecyclerView.Adapter<ListaProdutosAdap
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvNomeProduto,tvDescricao;
+        public TextView tvNomeProduto, tvDescricao;
         public ImageView imageView;
-        public MyViewHolder(View itemView) {
+        public CardView cardView;
+
+        public MyViewHolder(final View itemView) {
             super(itemView);
 
             tvNomeProduto = (TextView) itemView.findViewById(R.id.tvNomeProduto);
             tvDescricao = (TextView) itemView.findViewById(R.id.tvDescricao);
             imageView = (ImageView) itemView.findViewById(R.id.imageFerramenta);
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
+
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context, ProdutoActivity.class);
+                    i.putExtra("ferramenta", lista.get(getAdapterPosition()));
+                    itemView.getContext().startActivity(i);
+                }
+            });
         }
     }
 }

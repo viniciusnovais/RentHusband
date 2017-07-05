@@ -1,5 +1,6 @@
 package br.com.pdasolucoes.renthusband;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +26,12 @@ import br.com.pdasolucoes.renthusband.model.Ferramenta;
 import br.com.pdasolucoes.renthusband.model.Usuario;
 import br.com.pdasolucoes.renthusband.util.CadastroFerramentaService;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AbsRuntimePermission
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private GridLayoutManager gridLayoutManager;
     private RecyclerView recyclerView;
+    public static final int REQUEST_PERMISSION = 10;
     private ListaProdutosAdapter adapter;
     private TextView tvNomeCompleto, tvidade;
     private Usuario usuario;
@@ -40,6 +43,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
+
+        requestAppPermissions(new String[]{
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,}, R.string.msg, REQUEST_PERMISSION);
 
         //pegando o usuario Logado
         usuario = (Usuario) getIntent().getSerializableExtra("usuario");
@@ -72,6 +79,12 @@ public class MainActivity extends AppCompatActivity
 
         AsyncLista task = new AsyncLista();
         task.execute();
+
+
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode) {
 
     }
 
@@ -118,7 +131,7 @@ public class MainActivity extends AppCompatActivity
             i.putExtra("usuario", usuario);
             startActivity(i);
             // Handle the camera action
-        } else if (id == R.id.nav_alugar) {
+        } else if (id == R.id.nav_solicitacoes) {
 
         } else if (id == R.id.nav_perfil) {
             Intent i = new Intent(MainActivity.this, PerfilActivity.class);
@@ -130,6 +143,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_consultar) {
             Intent i = new Intent(MainActivity.this, ProdutoActivity.class);
             startActivity(i);
+
+        } else if (id == R.id.nav_sair) {
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -149,11 +164,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected void onPostExecute(List<Ferramenta> ferramentas) {
+        protected void onPostExecute(final List<Ferramenta> ferramentas) {
             super.onPostExecute(ferramentas);
 
             adapter = new ListaProdutosAdapter(ferramentas, MainActivity.this);
             recyclerView.setAdapter(adapter);
+
         }
     }
 

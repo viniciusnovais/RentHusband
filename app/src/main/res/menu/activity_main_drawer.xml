@@ -8,14 +8,14 @@
             android:icon="@drawable/ic_menu_share"
             android:title="Compartilhar Ferramenta" />
         <item
-            android:id="@+id/nav_alugar"
-            android:icon="@drawable/ic_handshake"
-            android:title="Alugar Ferramenta" />
+            android:id="@+id/nav_solicitacoes"
+            android:icon="@drawable/ic_request"
+            android:title="Solicitações" />
 
         <item
             android:id="@+id/nav_consultar"
-            android:icon="@drawable/ic_user"
-            android:title="Consultar Ferramenta" />
+            android:icon="@drawable/ic_tools"
+            android:title="Minhas Ferramentas" />
         <item
             android:id="@+id/nav_perfil"
             android:icon="@drawable/ic_user"
@@ -24,19 +24,24 @@
             android:id="@+id/nav_batepapo"
             android:icon="@drawable/ic_comments"
             android:title="Bate-papo" />
-</group>
+
+        <item
+            android:id="@+id/nav_sair"
+            android:icon="@drawable/ic_logout"
+            android:title="Sair" />
+    </group>
 
     <!--<item android:title="Communicate">-->
-        <!--<menu>-->
-            <!--<item-->
-                <!--android:id="@+id/nav_share"-->
-                <!--android:icon="@drawable/ic_menu_share"-->
-                <!--android:title="Share" />-->
-            <!--<item-->
-                <!--android:id="@+id/nav_send"-->
-                <!--android:icon="@drawable/ic_menu_send"-->
-                <!--android:title="Send" />-->
-        <!--</menu>-->
+    <!--<menu>-->
+    <!--<item-->
+    <!--android:id="@+id/nav_share"-->
+    <!--android:icon="@drawable/ic_menu_share"-->
+    <!--android:title="Share" />-->
+    <!--<item-->
+    <!--android:id="@+id/nav_send"-->
+    <!--android:icon="@drawable/ic_menu_send"-->
+    <!--android:title="Send" />-->
+    <!--</menu>-->
     <!--</item>-->
 
 </menu>

@@ -74,6 +74,7 @@
 
 
                 <TextView
+                    android:id="@+id/nomeDono"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border_falar_com"
@@ -81,10 +82,19 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:paddingTop="5dp"
-                    android:text="@string/falar"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/colorWhite"
                     android:textSize="20dp" />
+
+
+                <Button
+                    android:id="@+id/buttonSolicitar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Solicitar"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@drawable/border_button"/>
 
             </LinearLayout>
 

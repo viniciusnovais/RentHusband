@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -47,10 +48,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity {
 
     private Usuario usuario;
-    private static final int REQUEST_CAMERA = 0;
     private UserLoginTask mAuthTask = null;
-
-    // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -63,8 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
-
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -97,53 +93,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(CAMERA)) {
-            Snackbar.make(mEmailView, R.string.permission, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{CAMERA},REQUEST_CAMERA);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{CAMERA}, REQUEST_CAMERA);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CAMERA) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
-    }
-
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -156,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+
 
         boolean cancel = false;
         View focusView = null;
@@ -265,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Simulate network access.
                 Thread.sleep(2000);
 
-                if (usuario.getId()<1){
+                if (usuario.getId() < 1) {
                     return false;
                 }
             } catch (InterruptedException e) {
@@ -283,6 +233,14 @@ public class LoginActivity extends AppCompatActivity {
             if (success) {
                 if (usuario.getSenha().equals(mPassword) && usuario.getEmail().equals(mEmail)) {
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
+
+                    SharedPreferences preferences = getSharedPreferences("login", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("email", mEmail);
+                    editor.putString("senha", mPassword);
+                    editor.putInt("idUsuarioLogado", usuario.getId());
+                    editor.commit();
+
                     i.putExtra("usuario", usuario);
                     startActivity(i);
                     finish();
@@ -302,7 +260,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void limparCampos(){
+    public void limparCampos() {
         mEmailView.setText("");
         mPasswordView.setText("");
     }

@@ -53,6 +53,8 @@
     <string name="opcoes">Escolha a opçao</string>
     <string name="camera">Câmera</string>
     <string name="galeria">Galeria</string>
+    <string name="disponibilidade">Disponibilidade</string>
+    <string name="msg">Por favor, permita!</string>
 
     <string-array name="produto">
         <item>Mala de Ferramenta</item>
@@ -61,7 +63,7 @@
         <item>Chave de fenda</item>
         <item>Chave Philips</item>
         <item>Martelo</item>
-        <item>Licha elétrica</item>
+        <item>Lixadeira elétrica</item>
         <item>Parafusadeira</item>
     </string-array>
 </resources>

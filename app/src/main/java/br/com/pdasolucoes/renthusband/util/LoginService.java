@@ -52,7 +52,6 @@ public class LoginService {
         String url = WebService.URL + "d0c9c9a0241d/";
         String resposta = WebService.makeRequest(url);
         JSONObject jsonObject;
-        Usuario usuario = new Usuario();
 
         if (resposta == null) {
 

@@ -11,35 +11,35 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
-import br.com.pdasolucoes.renthusband.model.Ferramenta;
-import br.com.pdasolucoes.renthusband.model.Usuario;
+import br.com.pdasolucoes.renthusband.model.Aluguel;
 
 /**
- * Created by PDA on 07/06/2017.
+ * Created by PDA on 05/07/2017.
  */
 
-public class CadastroUsuarioService {
+public class ServiceAluguel {
 
-    public static void cadastro(Usuario usuario) {
+
+    public static void cadastro(Aluguel a) {
+
         String resposta = "";
 
         try {
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", usuario.getId());
-            jsonObject.put("nome", usuario.getNome());
-            jsonObject.put("dataNasc", usuario.getDataNasc());
-            jsonObject.put("endereco", usuario.getEndereco());
-            jsonObject.put("sexo", usuario.getSexo());
-            jsonObject.put("email", usuario.getEmail());
-            jsonObject.put("senha", usuario.getSenha());
+            jsonObject.put("id", a.getId());
+            jsonObject.put("dataSolicitacao", a.getDataSolicitacao());
+            jsonObject.put("diasSolicitacao", a.getDiasSolicitacao());
+            jsonObject.put("confirmacao", a.getConfirmacao());
+            jsonObject.put("dataAluguel", a.getDataAluguel());
+            jsonObject.put("dataDevolucao", a.getDataDevolucao());
+            jsonObject.put("ferramenta", a.getIdFerramenta());
+            jsonObject.put("usuarioSolicita", a.getIdUsuarioSolicita());
 
 
             try {
-                URL url = new URL(WebService.URL + "d0c9c9a0241d");
+                URL url = new URL(WebService.URL + "1bd5b175dcd1");
                 HttpURLConnection conexao = null;
                 conexao = (HttpURLConnection) url.openConnection();
                 conexao.setDoInput(true);
@@ -78,12 +78,12 @@ public class CadastroUsuarioService {
         }
     }
 
-    public static Usuario buscarDono(int id) {
+    public static int BuscarUltimoId() {
+        int id = 0;
 
-        String url = WebService.URL + "d0c9c9a0241d/search?id="+id;
+        String url = WebService.URL + "1bd5b175dcd1";
         String resposta = WebService.makeRequest(url);
         JSONObject jsonObject;
-        Usuario u = new Usuario();
 
         if (resposta == null) {
 
@@ -94,20 +94,16 @@ public class CadastroUsuarioService {
                 for (int i = 0; i < json.length(); i++) {
                     jsonObject = json.getJSONObject(i);
 
-                    u.setId(jsonObject.getInt("id"));
-                    u.setNome(jsonObject.getString("nome"));
-                    u.setDataNasc(jsonObject.getString("dataNasc"));
-                    u.setEndereco(jsonObject.getString("endereco"));
-                    u.setSexo(jsonObject.getString("sexo"));
-                    u.setEmail(jsonObject.getString("email"));
+                    id = jsonObject.getInt("id");
 
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-
-        } catch(JSONException e){
-            e.printStackTrace();
         }
-    }
 
-        return u;
-}
+
+        return id;
+    }
 }

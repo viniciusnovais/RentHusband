@@ -1,10 +1,12 @@
 package br.com.pdasolucoes.renthusband.model;
 
+import java.io.Serializable;
+
 /**
  * Created by PDA on 08/06/2017.
  */
 
-public class Ferramenta {
+public class Ferramenta implements Serializable {
 
     private int id;
     private String nome;

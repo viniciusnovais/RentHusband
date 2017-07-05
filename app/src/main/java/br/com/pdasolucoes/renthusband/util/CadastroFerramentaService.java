@@ -79,6 +79,35 @@ public class CadastroFerramentaService {
         }
     }
 
+    public static int BuscarUltimoId(){
+        int id = 0;
+
+        String url = WebService.URL + "b62ab90e75cc";
+        String resposta = WebService.makeRequest(url);
+        JSONObject jsonObject;
+
+        if (resposta == null) {
+
+        } else {
+
+            try {
+                JSONArray json = new JSONArray(resposta);
+                for (int i=0;i<json.length();i++){
+                    jsonObject = json.getJSONObject(i);
+
+                    id = jsonObject.getInt("id");
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return id;
+    }
+
     public static List<Ferramenta> listar(int id) {
 
         String url = WebService.URL + "b62ab90e75cc";

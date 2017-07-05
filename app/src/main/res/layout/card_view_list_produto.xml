@@ -26,12 +26,12 @@
 
         <ImageView
             android:id="@+id/imageFerramenta"
-            android:layout_width="200dp"
+            android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/mala" />
+            android:src="@drawable/ic_tools" />
 
         <TextView
             android:id="@+id/tvDescricao"

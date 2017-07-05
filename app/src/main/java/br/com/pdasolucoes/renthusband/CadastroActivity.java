@@ -182,7 +182,7 @@ public class CadastroActivity extends AppCompatActivity implements DatePickerDia
                 }
             });
 
-            handler.postDelayed(runnable, 100000);
+            handler.postDelayed(runnable, 10000);
             finish();
         }
 

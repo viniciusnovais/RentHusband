@@ -35,7 +35,7 @@ import br.com.pdasolucoes.renthusband.util.CadastroFerramentaService;
 public class CadastroFerramentaActivity extends AppCompatActivity {
 
     private AutoCompleteTextView tvDescricao, tvPreco;
-    private Spinner spinnerTipo, spinnerProduto;
+    private Spinner spinnerTipo, spinnerProduto, spinnerDispobilidade;
     private ImageView imageFoto;
     private Button btCadastrar;
     private Bitmap originalBitmap, resizedBitmap, photo;
@@ -45,6 +45,7 @@ public class CadastroFerramentaActivity extends AppCompatActivity {
     private Ferramenta f = new Ferramenta();
     private AlertDialog dialogOpcoes;
     private String[] tipo = new String[]{"Industrial", "Doméstico"};
+    private String[] disponibilidade = new String[]{"Disponível", "Indisponível"};
 
 
     @Override
@@ -58,6 +59,7 @@ public class CadastroFerramentaActivity extends AppCompatActivity {
         tvPreco = (AutoCompleteTextView) findViewById(R.id.preco);
         spinnerTipo = (Spinner) findViewById(R.id.spinnerTipo);
         spinnerProduto = (Spinner) findViewById(R.id.spinnerProduto);
+        spinnerDispobilidade = (Spinner) findViewById(R.id.spinnerDisponibilidade);
         imageFoto = (ImageView) findViewById(R.id.foto);
         btCadastrar = (Button) findViewById(R.id.cadastrar);
 
@@ -84,6 +86,21 @@ public class CadastroFerramentaActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 f.setNome(parent.getItemAtPosition(position).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, disponibilidade);
+        spinnerDispobilidade.setAdapter(adapter2);
+
+        spinnerDispobilidade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                f.setStatus(position);
             }
 
             @Override
@@ -136,7 +153,6 @@ public class CadastroFerramentaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 f.setDescricao(tvDescricao.getText().toString());
                 f.setPreco(Double.parseDouble(tvPreco.getText().toString()));
-                f.setStatus(0);
                 f.setUsuarioDono((Usuario) getIntent().getSerializableExtra("usuario"));
 
                 ferramentaDao.incluir(f);
@@ -205,9 +221,9 @@ public class CadastroFerramentaActivity extends AppCompatActivity {
         @Override
         protected Object doInBackground(Object[] params) {
 
-            f.setId(ferramentaDao.buscarUltimoId());
-
+            f.setId(CadastroFerramentaService.BuscarUltimoId()+1);
             CadastroFerramentaService.cadastro(f);
+
             return null;
         }
     }
