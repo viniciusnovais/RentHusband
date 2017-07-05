@@ -8,12 +8,13 @@ public class Ferramenta {
 
     private int id;
     private String nome;
-    private byte[] foto;
+    private String foto;
     private String descricao;
     private double preco;
     private int status;
     private int tipo;
     private Usuario usuarioDono;
+    private int idUsuario;
 
     public int getId() {
         return id;
@@ -31,13 +32,6 @@ public class Ferramenta {
         this.nome = nome;
     }
 
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
-    }
 
     public String getDescricao() {
         return descricao;
@@ -77,5 +71,21 @@ public class Ferramenta {
 
     public void setUsuarioDono(Usuario usuarioDono) {
         this.usuarioDono = usuarioDono;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }

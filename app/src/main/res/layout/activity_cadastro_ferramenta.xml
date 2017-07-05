@@ -24,21 +24,21 @@
         android:layout_height="5dp"
         android:background="@color/colorPrimary"/>
 
-    <android.support.design.widget.TextInputLayout
+    <TextView
+        android:id="@+id/textView"
+        android:textSize="17dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:text="@string/produto" />
 
-        <AutoCompleteTextView
-            android:id="@+id/nomeProduto"
+    <Spinner
+            android:id="@+id/spinnerProduto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/nome_produto"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textColor="@color/colorAccent" />
+            android:spinnerMode="dialog">
 
-    </android.support.design.widget.TextInputLayout>
+        </Spinner>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                 android:hint="@string/descricao"
                 android:inputType="text"
                 android:maxLines="1"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorBlack" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -89,7 +89,7 @@
             android:hint="@string/preco"
             android:inputType="text"
             android:maxLines="1"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorBlack" />
 
     </android.support.design.widget.TextInputLayout>
 

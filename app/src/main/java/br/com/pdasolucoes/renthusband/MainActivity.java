@@ -1,6 +1,7 @@
 package br.com.pdasolucoes.renthusband;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.pdasolucoes.renthusband.adapter.ListaProdutosAdapter;
+import br.com.pdasolucoes.renthusband.model.Ferramenta;
 import br.com.pdasolucoes.renthusband.model.Usuario;
+import br.com.pdasolucoes.renthusband.util.CadastroFerramentaService;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -28,7 +31,8 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private ListaProdutosAdapter adapter;
     private TextView tvNomeCompleto, tvidade;
-    Usuario usuario;
+    private Usuario usuario;
+    private List<Ferramenta> lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +64,15 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        List<Object> rowListItem = getAllItemList();
         gridLayoutManager = new GridLayoutManager(this, 2);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        adapter = new ListaProdutosAdapter(rowListItem, this);
-        recyclerView.setAdapter(adapter);
+        AsyncLista task = new AsyncLista();
+        task.execute();
+
     }
 
     @Override
@@ -110,43 +114,47 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_compartilhar) {
-            Intent i = new Intent(MainActivity.this,CadastroFerramentaActivity.class);
-            i.putExtra("usuario",usuario);
+            Intent i = new Intent(MainActivity.this, CadastroFerramentaActivity.class);
+            i.putExtra("usuario", usuario);
             startActivity(i);
             // Handle the camera action
         } else if (id == R.id.nav_alugar) {
 
         } else if (id == R.id.nav_perfil) {
-            Intent i = new Intent(MainActivity.this,PerfilActivity.class);
+            Intent i = new Intent(MainActivity.this, PerfilActivity.class);
             startActivity(i);
 
 
         } else if (id == R.id.nav_batepapo) {
 
         } else if (id == R.id.nav_consultar) {
-            Intent i = new Intent(MainActivity.this,ProdutoActivity.class);
+            Intent i = new Intent(MainActivity.this, ProdutoActivity.class);
             startActivity(i);
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
     }
 
-    private List<Object> getAllItemList() {
+    public class AsyncLista extends AsyncTask<Object, Integer, List<Ferramenta>> {
 
-        List<Object> allItems = new ArrayList<>();
-        allItems.add("bla");
-        allItems.add("bla");
-        allItems.add("bla");
-        allItems.add("bla");
-        allItems.add("bla");
-        allItems.add("bla");
-        allItems.add("bla");
-        allItems.add("bla");
-        allItems.add("bla");
 
-        return allItems;
+        @Override
+        protected List<Ferramenta> doInBackground(Object[] params) {
+            lista = CadastroFerramentaService.listar(usuario.getId());
+
+            return lista;
+        }
+
+        @Override
+        protected void onPostExecute(List<Ferramenta> ferramentas) {
+            super.onPostExecute(ferramentas);
+
+            adapter = new ListaProdutosAdapter(ferramentas, MainActivity.this);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
 }
